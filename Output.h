@@ -7,7 +7,7 @@
 void printStore(struct Store store)
 {
 	printf("Store\'s name: %s\n", store.name);
-	printf("Store\'s games count: %d\n", store.cinemaCount);
+	printf("Store\'s cinemas count: %d\n", store.cinemaCount);
 }
 
 void printGame(struct Cinema cinema, struct Store store)

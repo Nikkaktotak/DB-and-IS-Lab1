@@ -9,7 +9,7 @@
 
 #define CINEMAS_DATA "games.fl"
 #define CINEMAS_GARBAGE "games_garbage.txt"
-#define GAME_SIZE sizeof(struct Cinema)
+#define CINEMA_SIZE sizeof(struct Cinema)
 
 
 void reopenDatabase(FILE* database)
@@ -28,12 +28,12 @@ void linkAddresses(FILE* database, struct Store store, struct Cinema cinema)
 
 	for (int i = 0; i < store.cinemaCount; i++)		    
 	{
-		fread(&previous, GAME_SIZE, 1, database);
+		fread(&previous, CINEMA_SIZE, 1, database);
 		fseek(database, previous.nextIdx, SEEK_SET);
 	}
 
 	previous.nextIdx = cinema.selfIdx;				
-	fwrite(&previous, GAME_SIZE, 1, database);		
+	fwrite(&previous, CINEMA_SIZE, 1, database);		
 }
 
 void relinkAddresses(FILE* database, struct Cinema previous, struct Cinema cinema, struct Store* store)
@@ -61,7 +61,7 @@ void relinkAddresses(FILE* database, struct Cinema previous, struct Cinema cinem
 		}
 
 		fseek(database, previous.selfIdx, SEEK_SET);
-		fwrite(&previous, GAME_SIZE, 1, database);	
+		fwrite(&previous, CINEMA_SIZE, 1, database);	
 	}
 }
 
@@ -145,7 +145,7 @@ int insertCinema(struct Store store, struct Cinema cinema, char* error)
 		cinema.nextIdx = dbSize;
 	}
 
-	fwrite(&cinema, GAME_SIZE, 1, database);					
+	fwrite(&cinema, CINEMA_SIZE, 1, database);					
 
 	if (!store.cinemaCount)								    
 	{
@@ -176,7 +176,7 @@ int getSlave(struct Store store, struct Cinema* cinema, int productId, char* err
 
 
 	fseek(database, store.firstCinemaIdx, SEEK_SET);		
-	fread(cinema, GAME_SIZE, 1, database);
+	fread(cinema, CINEMA_SIZE, 1, database);
 
 	for (int i = 0; i < store.cinemaCount; i++)			
 	{
@@ -187,7 +187,7 @@ int getSlave(struct Store store, struct Cinema* cinema, int productId, char* err
 		}
 
 		fseek(database, cinema->nextIdx, SEEK_SET);
-		fread(cinema, GAME_SIZE, 1, database);
+		fread(cinema, CINEMA_SIZE, 1, database);
 	}
 	
 	strcpy(error, "No such cinema in database");			
@@ -200,7 +200,7 @@ int updateSlave(struct Cinema cinema, int productId)
 	FILE* database = fopen(CINEMAS_DATA, "r+b");
 
 	fseek(database, cinema.selfIdx, SEEK_SET);
-	fwrite(&cinema, GAME_SIZE, 1, database);
+	fwrite(&cinema, CINEMA_SIZE, 1, database);
 	fclose(database);
 	
 	return 1;
@@ -215,7 +215,7 @@ int deleteSlave(struct Store store, struct Cinema cinema, int productId, char* e
 
 	do		                                                    
 	{															
-		fread(&previous, GAME_SIZE, 1, database);
+		fread(&previous, CINEMA_SIZE, 1, database);
 		fseek(database, previous.nextIdx, SEEK_SET);
 	}
 	while (previous.nextIdx != cinema.selfIdx && cinema.selfIdx != store.firstCinemaIdx);
@@ -226,7 +226,7 @@ int deleteSlave(struct Store store, struct Cinema cinema, int productId, char* e
 	cinema.exists = 0;											
 
 	fseek(database, cinema.selfIdx, SEEK_SET);				
-	fwrite(&cinema, GAME_SIZE, 1, database);					
+	fwrite(&cinema, CINEMA_SIZE, 1, database);					
 	fclose(database);
 
 	store.cinemaCount--;										

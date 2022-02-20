@@ -51,7 +51,7 @@ int checkKeyPairUniqueness(struct Store store, int productId)
 
 	for (int i = 0; i < store.cinemaCount; i++)
 	{
-		fread(&cinema, GAME_SIZE, 1, cinemaDB);
+		fread(&cinema, CINEMA_SIZE, 1, cinemaDB);
 		fclose(cinemaDB);
 
 		if (cinema.genreId == productId)

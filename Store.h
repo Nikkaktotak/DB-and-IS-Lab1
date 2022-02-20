@@ -15,7 +15,7 @@
 
 #define CINEMAS_DATA "games.fl"
 #define CINEMAS_GARBAGE "games_garbage.txt"
-#define GAME_SIZE sizeof(struct Cinema)
+#define CINEMA_SIZE sizeof(struct Cinema)
 
 void noteDeletedStore(int id)
 {
@@ -239,7 +239,7 @@ int deleteStore(int id, char* error)
 
 		for (int i = 0; i < store.cinemaCount; i++)
 		{
-			fread(&cinema, GAME_SIZE, 1, gameDB);
+			fread(&cinema, CINEMA_SIZE, 1, gameDB);
 			fclose(gameDB);
 			deleteSlave(store, cinema, cinema.genreId, error);
 			
