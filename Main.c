@@ -63,8 +63,8 @@ int main()
 					scanf("%d", &id);
 
 					cinema.genreId = id;
-					readGames(&cinema);
-					insertGame(store, cinema, error);
+					readCinemas(&cinema);
+					insertCinema(store, cinema, error);
 					printf("Inserted successfully. To access, use store\'s and genre\'s IDs\n");
 				}
 				else
@@ -100,7 +100,7 @@ int main()
 					
 					if (getSlave(store, &cinema, id, error))
 					{
-						readGames(&cinema);
+						readCinemas(&cinema);
 						updateSlave(cinema, id, error);
 						printf("Updated successfully\n");
 					}

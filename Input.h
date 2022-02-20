@@ -17,7 +17,7 @@ void readStore(struct Store* store)
 	strcpy(store->name, name);
 }
 
-void readGames(struct Cinema* cinema)
+void readCinemas(struct Cinema* cinema)
 {
 	int x;
 	int price;

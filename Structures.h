@@ -8,7 +8,7 @@ struct Store
 {
 	int id;
 	char name[16];
-	long firstGameIdx;
+	long firstCinemaIdx;
 	int cinemaCount;
 };
 

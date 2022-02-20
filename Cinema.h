@@ -24,7 +24,7 @@ void linkAddresses(FILE* database, struct Store store, struct Cinema cinema)
 
 	struct Cinema previous;
 
-	fseek(database, store.firstGameIdx, SEEK_SET);
+	fseek(database, store.firstCinemaIdx, SEEK_SET);
 
 	for (int i = 0; i < store.cinemaCount; i++)		    
 	{
@@ -38,15 +38,15 @@ void linkAddresses(FILE* database, struct Store store, struct Cinema cinema)
 
 void relinkAddresses(FILE* database, struct Cinema previous, struct Cinema cinema, struct Store* store)
 {
-	if (cinema.selfIdx == store->firstGameIdx)		
+	if (cinema.selfIdx == store->firstCinemaIdx)		
 	{
 		if (cinema.selfIdx == cinema.nextIdx)			
 		{
-			store->firstGameIdx = -1;					
+			store->firstCinemaIdx = -1;					
 		}
 		else                                            
 		{
-			store->firstGameIdx = cinema.nextIdx;  
+			store->firstCinemaIdx = cinema.nextIdx;  
 		}
 	}
 	else                                         
@@ -118,7 +118,7 @@ void overwriteGarbageAddress(int garbageCount, FILE* garbageZone, struct Cinema*
 	fclose(garbageZone);									
 }
 
-int insertGame(struct Store store, struct Cinema cinema, char* error)
+int insertCinema(struct Store store, struct Cinema cinema, char* error)
 {
 	cinema.exists = 1;
 
@@ -149,7 +149,7 @@ int insertGame(struct Store store, struct Cinema cinema, char* error)
 
 	if (!store.cinemaCount)								    
 	{
-		store.firstGameIdx = cinema.selfIdx;
+		store.firstCinemaIdx = cinema.selfIdx;
 	}
 	else                                                       
 	{
@@ -168,14 +168,14 @@ int getSlave(struct Store store, struct Cinema* cinema, int productId, char* err
 {
 	if (!store.cinemaCount)									
 	{
-		strcpy(error, "This master has no slaves yet");
+		strcpy(error, "This store has no cinema yet");
 		return 0;
 	}
 
 	FILE* database = fopen(CINEMAS_DATA, "rb");
 
 
-	fseek(database, store.firstGameIdx, SEEK_SET);		
+	fseek(database, store.firstCinemaIdx, SEEK_SET);		
 	fread(cinema, GAME_SIZE, 1, database);
 
 	for (int i = 0; i < store.cinemaCount; i++)			
@@ -211,14 +211,14 @@ int deleteSlave(struct Store store, struct Cinema cinema, int productId, char* e
 	FILE* database = fopen(CINEMAS_DATA, "r+b");
 	struct Cinema previous;
 
-	fseek(database, store.firstGameIdx, SEEK_SET);
+	fseek(database, store.firstCinemaIdx, SEEK_SET);
 
 	do		                                                    
 	{															
 		fread(&previous, GAME_SIZE, 1, database);
 		fseek(database, previous.nextIdx, SEEK_SET);
 	}
-	while (previous.nextIdx != cinema.selfIdx && cinema.selfIdx != store.firstGameIdx);
+	while (previous.nextIdx != cinema.selfIdx && cinema.selfIdx != store.firstCinemaIdx);
 
 	relinkAddresses(database, previous, cinema, &store);
 	noteDeletedGame(cinema.selfIdx);						

@@ -44,26 +44,26 @@ int checkRecordExistence(struct Indexer indexer, char* error)
 
 int checkKeyPairUniqueness(struct Store store, int productId)
 {
-	FILE* gameDB = fopen(CINEMAS_DATA, "r+b");
+	FILE* cinemaDB = fopen(CINEMAS_DATA, "r+b");
 	struct Cinema cinema;
 
-	fseek(gameDB, store.firstGameIdx, SEEK_SET);
+	fseek(cinemaDB, store.firstCinemaIdx, SEEK_SET);
 
 	for (int i = 0; i < store.cinemaCount; i++)
 	{
-		fread(&cinema, GAME_SIZE, 1, gameDB);
-		fclose(gameDB);
+		fread(&cinema, GAME_SIZE, 1, cinemaDB);
+		fclose(cinemaDB);
 
 		if (cinema.genreId == productId)
 		{
 			return 0;
 		}
 
-		gameDB = fopen(CINEMAS_DATA, "r+b");
-		fseek(gameDB, cinema.nextIdx, SEEK_SET);
+		cinemaDB = fopen(CINEMAS_DATA, "r+b");
+		fseek(cinemaDB, cinema.nextIdx, SEEK_SET);
 	}
 
-	fclose(gameDB);
+	fclose(cinemaDB);
 
 	return 1;
 }

@@ -111,7 +111,7 @@ int insertStore(struct Store record)
 			record.id = 1;									
 		}
 	}
-	record.firstGameIdx = -1;
+	record.firstCinemaIdx = -1;
 	record.cinemaCount = 0;
 
 	fwrite(&record, STORE_SIZE, 1, database);				
@@ -235,7 +235,7 @@ int deleteStore(int id, char* error)
 		FILE* gameDB = fopen(CINEMAS_DATA, "r+b");
 		struct Cinema cinema;
 
-		fseek(gameDB, store.firstGameIdx, SEEK_SET);
+		fseek(gameDB, store.firstCinemaIdx, SEEK_SET);
 
 		for (int i = 0; i < store.cinemaCount; i++)
 		{
